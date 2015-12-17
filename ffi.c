@@ -954,7 +954,7 @@ static void set_struct(lua_State* L, int idx, void* to, int to_usr, const struct
 
             if (!have_first && lua_tonumber(L, -2) == 1 && lua_tonumber(L, -1) != 0) {
                 have_first = 1;
-            } else if (!have_other && (lua_type(L, -2) != LUA_TNUMBER || lua_tonumber(L, -2) != 1)) {
+            } else if (!have_other && (lua_type(L, -2) != LUA_TNUMBER || lua_tointeger(L, -2) != 1)) {
                 have_other = 1;
             }
 
