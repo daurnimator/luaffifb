@@ -2600,8 +2600,8 @@ static int ffi_errno(lua_State* L)
     struct jit* jit = get_jit(L);
 
     if (!lua_isnoneornil(L, 1)) {
-        lua_pushnumber(L, jit->last_errno);
-        jit->last_errno = luaL_checknumber(L, 1);
+        lua_pushinteger(L, jit->last_errno);
+        jit->last_errno = luaL_checkinteger(L, 1);
     } else {
         lua_pushnumber(L, jit->last_errno);
     }
