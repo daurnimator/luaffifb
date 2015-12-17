@@ -1861,14 +1861,14 @@ err:
             lua_pushboolean(L, *(_Bool*) data);
             break;
         case INT8_TYPE:
-            lua_pushnumber(L, ct.is_unsigned ? (lua_Number) *(uint8_t*) data : (lua_Number) *(int8_t*) data);
+            lua_pushinteger(L, ct.is_unsigned ? (lua_Integer) *(uint8_t*) data : (lua_Integer) *(int8_t*) data);
             break;
         case INT16_TYPE:
-            lua_pushnumber(L, ct.is_unsigned ? (lua_Number) *(uint16_t*) data : (lua_Number) *(int16_t*) data);
+            lua_pushinteger(L, ct.is_unsigned ? (lua_Integer) *(uint16_t*) data : (lua_Integer) *(int16_t*) data);
             break;
         case ENUM_TYPE:
         case INT32_TYPE:
-            lua_pushnumber(L, ct.is_unsigned ? (lua_Number) *(uint32_t*) data : (lua_Number) *(int32_t*) data);
+            lua_pushinteger(L, ct.is_unsigned ? (lua_Integer) *(uint32_t*) data : (lua_Integer) *(int32_t*) data);
             break;
         case INT64_TYPE:
             to = push_cdata(L, -1, &ct);
