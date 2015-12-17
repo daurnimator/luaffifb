@@ -202,7 +202,10 @@ static int get_cfunction_address(lua_State* L, int idx, cfunction* addr);
         break;                                                              \
                                                                             \
     case LUA_TNUMBER:                                                       \
-        ret = (TYPE) lua_tonumber(L, idx);                                  \
+        if (lua_isinteger(L, idx))                                          \
+            ret = (TYPE) lua_tointeger(L, idx);                             \
+        else                                                                \
+            ret = (TYPE) lua_tonumber(L, idx);                              \
         break;                                                              \
                                                                             \
     case LUA_TSTRING:                                                       \
@@ -356,8 +359,13 @@ static size_t unpack_vararg(lua_State* L, int i, char* to)
         return sizeof(int);
 
     case LUA_TNUMBER:
-        *(double*) to = lua_tonumber(L, i);
-        return sizeof(double);
+        if (lua_isinteger(L, i)) {
+            *(lua_Integer*) to = lua_tointeger(L, i);
+            return sizeof(lua_Integer);
+        } else {
+            *(double*) to = lua_tonumber(L, i);
+            return sizeof(double);
+        }
 
     case LUA_TSTRING:
         *(const char**) to = lua_tostring(L, i);
