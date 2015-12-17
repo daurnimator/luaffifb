@@ -158,7 +158,7 @@ static int64_t check_intptr(lua_State* L, int idx, void* p, struct ctype* ct)
         ct->base_size = 8;
         ct->type = INT64_TYPE;
         ct->is_defined = 1;
-        ret = luaL_checknumber(L, idx);
+        ret = luaL_checkinteger(L, idx);
         return ret;
 
     } else if (ct->pointers) {
@@ -1168,13 +1168,13 @@ static void get_variable_array_size(lua_State* L, int idx, struct ctype* ct)
 
     if (ct->is_variable_array) {
         assert(ct->is_array);
-        ct->array_size = (size_t) luaL_checknumber(L, idx);
+        ct->array_size = (size_t) luaL_checkinteger(L, idx);
         ct->is_variable_array = 0;
         lua_remove(L, idx);
 
     } else if (ct->is_variable_struct && !ct->variable_size_known) {
         assert(ct->type == STRUCT_TYPE && !ct->is_array);
-        ct->variable_increment *= (size_t) luaL_checknumber(L, idx);
+        ct->variable_increment *= (size_t) luaL_checkinteger(L, idx);
         ct->variable_size_known = 1;
         lua_remove(L, idx);
     }
@@ -2654,7 +2654,7 @@ static int ffi_string(lua_State* L)
     data = (char*) check_cdata(L, 1, &ct);
 
     if (is_void_ptr(&ct)) {
-        lua_pushlstring(L, data, (size_t) luaL_checknumber(L, 2));
+        lua_pushlstring(L, data, (size_t) luaL_checkinteger(L, 2));
         return 1;
 
     } else if (ct.type == INT8_TYPE && ct.pointers == 1) {
@@ -2667,7 +2667,7 @@ static int ffi_string(lua_State* L)
             }
             sz = (size_t) val;
         } else if (!lua_isnil(L, 2)) {
-            sz = (size_t) luaL_checknumber(L, 2);
+            sz = (size_t) luaL_checkinteger(L, 2);
 
         } else if (ct.is_array && !ct.is_variable_array) {
             char* nul = memchr(data, '\0', ct.array_size);
